@@ -1,0 +1,60 @@
+plugins {
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
+    id("net.mamoe.mirai-console") version "2.16.0"
+}
+
+group = "com.mieai"
+version = "1.0.2"
+
+repositories {
+    maven("https://maven.aliyun.com/repository/public")
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly("com.squareup.okhttp3:okhttp:4.12.0")
+    compileOnly("org.json:json:20231013")
+    compileOnly("org.xerial:sqlite-jdbc:3.45.1.0")
+    compileOnly("com.mysql:mysql-connector-j:8.3.0")
+    compileOnly("com.zaxxer:HikariCP:5.1.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
+    compileOnly("org.yaml:snakeyaml:2.2")
+    compileOnly(files("/opt/overflow/content/overflow-core-all-1.1.0-all.jar"))
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.mieai.plugin.MieAiPlugin"
+    }
+    // Don't include runtime dependencies - they're already in mirai-console
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register("generatePluginServices") {
+    doLast {
+        val servicesDir = file("${buildDir}/resources/main/META-INF/services")
+        servicesDir.mkdirs()
+        val pluginList = mutableListOf("com.mieai.plugin.MieAiPlugin")
+        
+        val classesDir = file("${buildDir}/classes/kotlin/main/com/mieai/store")
+        if (classesDir.exists() && classesDir.resolve("MessageStorePlugin.class").exists()) {
+            pluginList.add("com.mieai.store.MessageStorePlugin")
+        }
+        
+        file("${servicesDir}/net.mamoe.mirai.console.plugin.jvm.JvmPlugin").writeText(
+            pluginList.joinToString("\n")
+        )
+        println("[generatePluginServices] Registered plugins: $pluginList")
+    }
+}
+
+tasks.named<Copy>("processResources") {
+    dependsOn("compileKotlin")
+    finalizedBy("generatePluginServices")
+    outputs.upToDateWhen { false }
+}

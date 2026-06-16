@@ -1,0 +1,20 @@
+-- MieAI 消息存储 - MySQL 初始化脚本
+-- 每群独立建表，此脚本为模板，实际建表由代码动态执行
+
+-- 示例：群号 123456789 的消息表
+-- CREATE TABLE IF NOT EXISTS `messages_123456789` (
+--     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--     message_id BIGINT NOT NULL,
+--     content TEXT NOT NULL,
+--     user_qq BIGINT NOT NULL,
+--     timestamp BIGINT NOT NULL,
+--     stored_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+--     analyzed_by_group_ai BOOLEAN DEFAULT FALSE,
+--     analyzed_by_user_ai BOOLEAN DEFAULT FALSE,
+--     analyzed_at DATETIME NULL,
+--     metadata TEXT,
+--     INDEX idx_123456789_timestamp (timestamp),
+--     INDEX idx_123456789_user (user_qq),
+--     INDEX idx_123456789_analyzed (analyzed_by_group_ai, analyzed_by_user_ai),
+--     INDEX idx_123456789_cleanup (analyzed_by_group_ai, analyzed_by_user_ai, timestamp)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

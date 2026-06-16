@@ -1,0 +1,21 @@
+-- MieAI 消息存储 - SQLite 初始化脚本
+-- 每群独立建表，此脚本为模板，实际建表由代码动态执行
+
+-- 示例：群号 123456789 的消息表
+-- CREATE TABLE IF NOT EXISTS messages_123456789 (
+--     id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     message_id INTEGER NOT NULL,
+--     content TEXT NOT NULL,
+--     user_qq INTEGER NOT NULL,
+--     timestamp INTEGER NOT NULL,
+--     stored_at TEXT DEFAULT (datetime('now', 'localtime')),
+--     analyzed_by_group_ai INTEGER DEFAULT 0,
+--     analyzed_by_user_ai INTEGER DEFAULT 0,
+--     analyzed_at TEXT,
+--     metadata TEXT
+-- );
+--
+-- CREATE INDEX IF NOT EXISTS idx_123456789_timestamp ON messages_123456789(timestamp);
+-- CREATE INDEX IF NOT EXISTS idx_123456789_user ON messages_123456789(user_qq);
+-- CREATE INDEX IF NOT EXISTS idx_123456789_analyzed ON messages_123456789(analyzed_by_group_ai, analyzed_by_user_ai);
+-- CREATE INDEX IF NOT EXISTS idx_123456789_cleanup ON messages_123456789(analyzed_by_group_ai, analyzed_by_user_ai, timestamp);

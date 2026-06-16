@@ -1,0 +1,28 @@
+{
+  "storage": {
+    "enabled": true,
+    "type": "sqlite",
+    "sqlite": {
+      "path": "~/.mieai/data/messages.db"
+    },
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "database": "mieai_messages",
+      "username": "root",
+      "password": "",
+      "autoInit": true,
+      "connectionPool": {
+        "maxSize": 10,
+        "minIdle": 2,
+        "connectionTimeout": 30000
+      }
+    }
+  },
+  "messageLimits": {
+    "maxPerGroup": 100000,
+    "retentionDays": 0,
+    "cleanupIntervalHours": 24,
+    "minCleanupCount": 1000
+  }
+}
