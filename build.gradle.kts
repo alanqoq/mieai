@@ -50,13 +50,8 @@ tasks.register("generatePluginServices") {
     doLast {
         val servicesDir = file("${buildDir}/resources/main/META-INF/services")
         servicesDir.mkdirs()
-        val pluginList = mutableListOf("com.mieai.plugin.MieAiPlugin")
-        
-        // 扫描所有 Kotlin 编译输出目录找到 MessageStorePlugin
-        val classesDir = file("${buildDir}/classes/kotlin/main/com/mieai/store")
-        if (classesDir.exists() && classesDir.resolve("MessageStorePlugin.class").exists()) {
-            pluginList.add("com.mieai.store.MessageStorePlugin")
-        }
+        // 只注册主插件（mieai-store 独立部署）
+        val pluginList = listOf("com.mieai.plugin.MieAiPlugin")
         
         file("${servicesDir}/net.mamoe.mirai.console.plugin.jvm.JvmPlugin").writeText(
             pluginList.joinToString("\n")
