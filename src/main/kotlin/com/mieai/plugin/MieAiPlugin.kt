@@ -29,7 +29,7 @@ object MieAiPlugin : KotlinPlugin(
     JvmPluginDescription(
         id = "com.mieai.mieai",
         name = "mieai",
-        version = "1.0.4"
+        version = "1.0.5"
     ) {
         author("超级龙虾")
         info("ChatGPT 群聊机器人插件")
@@ -207,7 +207,7 @@ object MieAiPlugin : KotlinPlugin(
             append("【以下是最新的 ${contextMsgs.size} 条群聊消息，供你参考上下文】\n")
             contextMsgs.forEach { (name, qqId, msg) ->
                 if (MieAiConfig.enableMessageFormat) {
-                    append(MessageFormatter.formatGroupMessage(name, qqId, msg))
+                    append(MessageFormatter.formatGroupMessage(name, qqId, msg, MieAiConfig.messageFormatTemplate))
                 } else {
                     append("$name: $msg")
                 }
@@ -250,7 +250,7 @@ object MieAiPlugin : KotlinPlugin(
 
         // 如果 enableMessageFormat，给 cleanMessage 加上群友标识
         val taggedMessage = if (MieAiConfig.enableMessageFormat) {
-            MessageFormatter.formatGroupMessage(event.senderName, sender.id, cleanMessage)
+            MessageFormatter.formatGroupMessage(event.senderName, sender.id, cleanMessage, MieAiConfig.messageFormatTemplate)
         } else {
             cleanMessage
         }

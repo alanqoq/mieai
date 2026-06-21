@@ -63,9 +63,17 @@ object MieAiConfig {
 
     /**
      * 是否在发给 OpenAI 的消息中添加群友标识
-     * 开启后发送给 AI 的消息格式为: [群友名]-[QQ号]：[消息]
+     * 开启后发送给 AI 的消息按 messageFormatTemplate 格式化
      */
     var enableMessageFormat: Boolean = false
+
+    /**
+     * 消息格式化模板（enableMessageFormat 开启时生效）
+     * 占位符：{name}=群友名, {qq}=QQ号, {msg}=消息内容
+     * 默认：[{name}]-[{qq}]：{msg}
+     * 示例：调整为 {msg}：{qq}-{name} → 消息内容：QQ号-群友名
+     */
+    var messageFormatTemplate: String = "[{name}]-[{qq}]：{msg}"
 
     // ── 加载/保存 ──
 
@@ -97,6 +105,7 @@ object MieAiConfig {
             map["enableImageRecognition"]?.toString()?.toBooleanStrictOrNull()?.let { enableImageRecognition = it }
             map["maxImageSizeKB"]?.toString()?.toIntOrNull()?.let { maxImageSizeKB = it }
             map["enableMessageFormat"]?.toString()?.toBooleanStrictOrNull()?.let { enableMessageFormat = it }
+            map["messageFormatTemplate"]?.toString()?.let { messageFormatTemplate = it }
 
             // Map 类型
             @Suppress("UNCHECKED_CAST")
@@ -187,6 +196,7 @@ object MieAiConfig {
             append("# 是否启用群消息格式化输出\n")
             append("# 开启后群聊消息会被格式化为: [群友名]-[QQ号]：[消息]\n")
             append("enableMessageFormat: $enableMessageFormat\n")
+            append("messageFormatTemplate: $messageFormatTemplate\n")
         }
         file.writeText(content)
     }
