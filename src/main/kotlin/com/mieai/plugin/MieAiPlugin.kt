@@ -187,7 +187,7 @@ object MieAiPlugin : KotlinPlugin(
         // 格式化输出（根据配置开关）
         if (MieAiConfig.enableMessageFormat) {
             val formatted = MessageFormatter.formatGroupMessage(senderName, event.sender.id, content)
-            logger.info(formatted)
+            logger.debug(formatted)
         }
 
         val history = recentMessages.getOrPut(groupId) { CopyOnWriteArrayList() }

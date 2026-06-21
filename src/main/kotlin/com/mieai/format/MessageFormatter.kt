@@ -17,6 +17,7 @@ object MessageFormatter {
      * @return 格式化后的字符串
      */
     fun formatGroupMessage(senderName: String, qqId: Long, content: String): String {
-        return "[$senderName]-[$qqId]：$content"
+        val safeName = senderName.take(30).replace("\n", " ").replace("\r", "")
+        return "[$safeName]-[$qqId]：$content"
     }
 }
